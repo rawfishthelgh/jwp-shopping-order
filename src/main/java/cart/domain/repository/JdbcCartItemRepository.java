@@ -4,8 +4,10 @@ import cart.dao.CartItemDao;
 import cart.domain.CartItem;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public class JdbcCartItemRepository implements CartItemRepository{
+public class JdbcCartItemRepository implements CartItemRepository {
     private final CartItemDao cartItemDao;
 
     public JdbcCartItemRepository(final CartItemDao cartItemDao) {
@@ -18,7 +20,27 @@ public class JdbcCartItemRepository implements CartItemRepository{
     }
 
     @Override
+    public List<CartItem> findByMemberId(final Long id) {
+        return cartItemDao.findByMemberId(id);
+    }
+
+    @Override
+    public CartItem findByMemberIdAndProductId(final Long memberId, final Long productId) {
+        return cartItemDao.findByMemberIdAndProductId(memberId, productId);
+    }
+
+    @Override
+    public Long save(final CartItem cartItem) {
+        return cartItemDao.save(cartItem);
+    }
+
+    @Override
     public void deleteCartItemById(final Long id) {
         cartItemDao.deleteById(id);
+    }
+
+    @Override
+    public void updateQuantity(final CartItem cartItem) {
+        cartItemDao.updateQuantity(cartItem);
     }
 }
