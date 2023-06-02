@@ -25,7 +25,8 @@ public class OrderDao {
         this.jdbcTemplate = jdbcTemplate;
         this.simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("orders")
-                .usingGeneratedKeyColumns("id");
+                .usingGeneratedKeyColumns("id")
+                .usingColumns("member_id", "payment", "discount_point");
     }
 
     public Long saveOrder(Order order) {
