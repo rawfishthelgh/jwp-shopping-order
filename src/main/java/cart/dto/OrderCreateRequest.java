@@ -2,14 +2,14 @@ package cart.dto;
 
 import java.util.List;
 
-public class OrderRequest {
+public class OrderCreateRequest {
     List<OrderItem> orderItems;
     PaymentDto payment;
 
-    public OrderRequest() {
+    public OrderCreateRequest() {
     }
 
-    public OrderRequest(final List<OrderItem> orderItems, final PaymentDto payment) {
+    public OrderCreateRequest(final List<OrderItem> orderItems, final PaymentDto payment) {
         this.orderItems = orderItems;
         this.payment = payment;
     }

@@ -26,15 +26,15 @@ public class OrderService {
         this.cartItemRepository = cartItemRepository;
     }
 
-    public Long addOrder(final Member member, final OrderRequest orderRequest) {
-        final List<CartItem> cartItems = orderRequest.getOrderItems().stream()
+    public Long addOrder(final Member member, final OrderCreateRequest orderCreateRequest) {
+        final List<CartItem> cartItems = orderCreateRequest.getOrderItems().stream()
                 .map(orderItem -> cartItemRepository.findCartItemById(orderItem.getCartItemId()))
                 .collect(Collectors.toList());
         final List<OrderDetail> orderDetails = cartItems.stream()
                 .map(cartItem -> new OrderDetail(cartItem.getProduct(),(long)cartItem.getQuantity()))
                 .collect(Collectors.toList());
 
-        final Order order = new Order(orderDetails, new Payment(BigDecimal.valueOf(orderRequest.getPayment().getFinalPayment())), new Point(BigDecimal.valueOf(orderRequest.getPayment().getPoint())), member);
+        final Order order = new Order(orderDetails, new Payment(BigDecimal.valueOf(orderCreateRequest.getPayment().getFinalPayment())), new Point(BigDecimal.valueOf(orderCreateRequest.getPayment().getPoint())), member);
         //포인트 차감 및 적립
         final Point addedPoint = new Point(pointRewardPolicy.calculate(order.getPayment()));
         final Point newPoint = order.calculateNewPoint(addedPoint);

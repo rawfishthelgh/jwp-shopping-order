@@ -22,11 +22,11 @@ public class OrderIntegrationTest extends IntegrationTest {
     @Test
     void 주문을_생성하면_결제금액에_비례하여_포인트가_쌓인다() {
         final Member member = new Member(1L, "tmdgh1592@naver.com", "1234", new Point(BigDecimal.ZERO));
-        final OrderRequest orderRequest = new OrderRequest(List.of(new OrderItem(1L)), new PaymentDto(20000L, 20000L, 0L));
+        final OrderCreateRequest orderCreateRequest = new OrderCreateRequest(List.of(new OrderItem(1L)), new PaymentDto(20000L, 20000L, 0L));
         final ExtractableResponse<Response> createResponse = given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .auth().preemptive().basic(member.getEmail(), member.getPassword())
-                .body(orderRequest)
+                .body(orderCreateRequest)
                 .when()
                 .post("/orders")
                 .then()
@@ -50,19 +50,19 @@ public class OrderIntegrationTest extends IntegrationTest {
     @Test
     void 사용_포인트_만큼_포인트_잔고에서_차감된다() {
         final Member member = new Member(1L, "tmdgh1592@naver.com", "1234", new Point(BigDecimal.ZERO));
-        final OrderRequest orderRequest = new OrderRequest(List.of(new OrderItem(1L)), new PaymentDto(20000L, 20000L, 0L));
+        final OrderCreateRequest orderCreateRequest = new OrderCreateRequest(List.of(new OrderItem(1L)), new PaymentDto(20000L, 20000L, 0L));
         given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .auth().preemptive().basic(member.getEmail(), member.getPassword())
-                .body(orderRequest)
+                .body(orderCreateRequest)
                 .when()
                 .post("/orders");
 
-        final OrderRequest newOrderRequest = new OrderRequest(List.of(new OrderItem(2L)), new PaymentDto(80000L, 78000L, 2000L));
+        final OrderCreateRequest newOrderCreateRequest = new OrderCreateRequest(List.of(new OrderItem(2L)), new PaymentDto(80000L, 78000L, 2000L));
         given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .auth().preemptive().basic(member.getEmail(), member.getPassword())
-                .body(newOrderRequest)
+                .body(newOrderCreateRequest)
                 .when()
                 .post("/orders");
 
@@ -81,12 +81,12 @@ public class OrderIntegrationTest extends IntegrationTest {
     @Test
     void 주문이_완료되면_장바구니_물품이_삭제된다() {
         final Member member = new Member(1L, "tmdgh1592@naver.com", "1234", new Point(BigDecimal.ZERO));
-        final OrderRequest orderRequest = new OrderRequest(List.of(new OrderItem(1L)), new PaymentDto(20000L, 20000L, 0L));
+        final OrderCreateRequest orderCreateRequest = new OrderCreateRequest(List.of(new OrderItem(1L)), new PaymentDto(20000L, 20000L, 0L));
 
         given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .auth().preemptive().basic(member.getEmail(), member.getPassword())
-                .body(orderRequest)
+                .body(orderCreateRequest)
                 .when()
                 .post("/orders");
 
