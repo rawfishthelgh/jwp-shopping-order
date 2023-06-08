@@ -1,4 +1,4 @@
-package cart.domain.pointRewardPolicy;
+package cart.domain.pointrewardpolicy;
 
 import cart.domain.Payment;
 

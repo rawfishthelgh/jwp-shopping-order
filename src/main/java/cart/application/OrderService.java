@@ -1,7 +1,7 @@
 package cart.application;
 
 import cart.domain.*;
-import cart.domain.pointRewardPolicy.PointRewardPolicy;
+import cart.domain.pointrewardpolicy.PointRewardPolicy;
 import cart.domain.repository.CartItemRepository;
 import cart.domain.repository.OrderRepository;
 import cart.dto.*;
