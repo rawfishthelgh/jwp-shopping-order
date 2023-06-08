@@ -26,6 +26,12 @@ public class Order {
         this.member = member;
     }
 
+    public Point calculateNewPoint(Point addedPoint){
+        final Point originalPoint = member.getPoint();
+        final Point usedPoint = this.point;
+        return originalPoint.subtractPoint(usedPoint).addPoint(addedPoint);
+    }
+
     private void validatePayment(List<OrderDetail> orderDetails, Payment payment, Point point) {
         final int totalPrice = orderDetails.stream()
                 .mapToInt(orderDetail -> (int) (orderDetail.getProduct().getPrice() * orderDetail.getQuantity()))

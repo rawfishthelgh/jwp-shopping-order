@@ -36,10 +36,8 @@ public class OrderService {
 
         final Order order = new Order(orderDetails, new Payment(BigDecimal.valueOf(orderRequest.getPayment().getFinalPayment())), new Point(BigDecimal.valueOf(orderRequest.getPayment().getPoint())), member);
         //포인트 차감 및 적립
-        final Point originalPoint = member.getPoint();
-        final Point usedPoint = order.getPoint();
         final Point addedPoint = new Point(pointRewardPolicy.calculate(order.getPayment()));
-        final Point newPoint = originalPoint.subtractPoint(usedPoint).addPoint(addedPoint);
+        final Point newPoint = order.calculateNewPoint(addedPoint);
         orderRepository.updateMemberPoint(member, newPoint);
         //주문 저장
         final Long orderId = orderRepository.saveOrder(order);
