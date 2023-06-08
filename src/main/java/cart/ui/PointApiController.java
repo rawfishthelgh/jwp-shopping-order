@@ -23,6 +23,4 @@ public class PointApiController {
         final PointResponse point = pointService.findPointByMember(member);
         return ResponseEntity.ok(point);
     }
-
-
 }
