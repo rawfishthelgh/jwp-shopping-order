@@ -30,9 +30,9 @@ public class OrderDao {
 
     public Long saveOrder(Order order) {
         Map<String, Object> params = new HashMap<>();
-        params.put("member_id",order.getMember().getId());
-        params.put("payment",order.getPayment().getPayment().longValue());
-        params.put("discount_point",order.getPoint().getPoint().longValue());
+        params.put("member_id", order.getMember().getId());
+        params.put("payment", order.getPayment().getPayment().longValue());
+        params.put("discount_point", order.getPoint().getPoint().longValue());
 
         Long orderId = simpleJdbcInsert.executeAndReturnKey(params).longValue();
 
@@ -66,22 +66,22 @@ public class OrderDao {
 
     public List<OrderDetailEntity> findOrderDetailsByOrderId(final Long orderId) {
         String sql = "SELECT * FROM order_detail WHERE order_id =?";
-        return jdbcTemplate.query(sql,(rs, rowNum) -> new OrderDetailEntity(
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new OrderDetailEntity(
                 rs.getLong("id"),
                 rs.getLong("order_id"),
                 rs.getLong("product_id"),
                 rs.getLong("quantity")
-        ),orderId);
+        ), orderId);
     }
 
     public OrderEntity findOrderById(final Long orderId) {
         String sql = "SELECT * FROM orders WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql,new Object[]{orderId},(rs, rowNum) -> new OrderEntity(
+        return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new OrderEntity(
                 orderId,
                 rs.getLong("member_id"),
                 rs.getLong("payment"),
                 rs.getLong("discount_point")
 
-        ));
+        ), orderId);
     }
 }

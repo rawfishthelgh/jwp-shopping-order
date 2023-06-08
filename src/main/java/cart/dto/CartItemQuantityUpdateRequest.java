@@ -1,10 +1,10 @@
 package cart.dto;
 
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 public class CartItemQuantityUpdateRequest {
 
-    @Positive
+    @PositiveOrZero
     private int quantity;
 
     public CartItemQuantityUpdateRequest() {

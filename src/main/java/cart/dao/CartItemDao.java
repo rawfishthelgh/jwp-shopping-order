@@ -30,7 +30,7 @@ public class CartItemDao {
                     "INNER JOIN member ON cart_item.member_id = member.id " +
                     "INNER JOIN product ON cart_item.product_id = product.id " +
                     "WHERE cart_item.member_id = ?";
-            return jdbcTemplate.query(sql, new Object[]{memberId}, (rs, rowNum) -> {
+            return jdbcTemplate.query(sql, (rs, rowNum) -> {
                 String email = rs.getString("email");
                 Long productId = rs.getLong("product.id");
                 String name = rs.getString("name");
@@ -41,8 +41,8 @@ public class CartItemDao {
                 Member member = new Member(memberId, email, null);
                 Product product = new Product(productId, name, price, imageUrl);
                 return new CartItem(cartItemId, quantity, product, member);
-            });
-        }catch (DataAccessException e){
+            }, memberId);
+        } catch (DataAccessException e) {
             throw new IllegalArgumentException("장바구니에 물품이 없습니다");
         }
     }
@@ -55,7 +55,7 @@ public class CartItemDao {
                     "INNER JOIN product ON cart_item.product_id = product.id " +
                     "WHERE cart_item.member_id = ? " +
                     "AND cart_item.product_id = ?";
-            return jdbcTemplate.queryForObject(sql,(rs, rowNum) -> {
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
                 String email = rs.getString("email");
                 String name = rs.getString("name");
                 int price = rs.getInt("price");
@@ -65,9 +65,9 @@ public class CartItemDao {
                 Member member = new Member(memberId, email, null);
                 Product product = new Product(rs.getLong("product.id"), name, price, imageUrl);
                 return new CartItem(cartItemId, quantity, product, member);
-            },memberId,productId);
-        }catch (EmptyResultDataAccessException e){
-            throw new IllegalArgumentException(productId+"에 해당하는 장바구니 상품이 존재하지 않습니다");
+            }, memberId, productId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new IllegalArgumentException(productId + "에 해당하는 장바구니 상품이 존재하지 않습니다");
         }
     }
 
@@ -96,7 +96,7 @@ public class CartItemDao {
                 "INNER JOIN member ON cart_item.member_id = member.id " +
                 "INNER JOIN product ON cart_item.product_id = product.id " +
                 "WHERE cart_item.id = ?";
-        List<CartItem> cartItems = jdbcTemplate.query(sql, new Object[]{id}, (rs, rowNum) -> {
+        List<CartItem> cartItems = jdbcTemplate.query(sql, (rs, rowNum) -> {
             Long memberId = rs.getLong("member_id");
             String email = rs.getString("email");
             Long productId = rs.getLong("product.id");
@@ -108,7 +108,7 @@ public class CartItemDao {
             Member member = new Member(memberId, email, null);
             Product product = new Product(productId, name, price, imageUrl);
             return new CartItem(cartItemId, quantity, product, member);
-        });
+        }, id);
         return cartItems.isEmpty() ? null : cartItems.get(0);
     }
 
