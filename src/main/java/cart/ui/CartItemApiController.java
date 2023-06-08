@@ -43,7 +43,7 @@ public class CartItemApiController {
                     member
                     , cartItem.getId()
                     , new CartItemQuantityUpdateRequest(cartItem.getQuantity() + 1));
-            return ResponseEntity.created(URI.create("/cart-items/" + cartItem.getId())).build();
+            return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             Long cartItemId = cartItemService.add(member, cartItemRequest);
             return ResponseEntity.created(URI.create("/cart-items/" + cartItemId)).build();
